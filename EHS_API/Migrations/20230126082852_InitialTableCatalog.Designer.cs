@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EHS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230126052904_InitializeSellerModel")]
-    partial class InitializeSellerModel
+    [Migration("20230126082852_InitialTableCatalog")]
+    partial class InitialTableCatalog
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

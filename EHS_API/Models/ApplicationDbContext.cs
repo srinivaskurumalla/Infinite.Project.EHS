@@ -9,9 +9,12 @@ namespace EHS_API.Models
 
         }
 
+
         //Add References
         public DbSet<Seller> Sellers { get; set; }
         public DbSet<House> Houses { get; set; }
         public DbSet<House> HouseImages { get; set; }
+        public DbSet<UserDetails> Users { get; set; }
+        public DbSet<UserRoles> Roles { get; set; }
     }
 }

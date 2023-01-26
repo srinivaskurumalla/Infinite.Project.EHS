@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EHS_API.Migrations
 {
-    public partial class InitializeSellerModel : Migration
+    public partial class InitialTableCatalog : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

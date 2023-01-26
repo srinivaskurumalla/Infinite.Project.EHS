@@ -15,10 +15,6 @@ namespace EHS_API.Models
         public string LastName { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
         [Phone]
         public string PhoneNumber { get; set; }
 
