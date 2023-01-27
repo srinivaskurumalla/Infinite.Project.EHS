@@ -75,6 +75,8 @@ namespace EHS_API.Models
        // public int HouseImageId { get; set; }
         public ICollection<HouseImage> HouseImages { get; set; }
 
+        public string Status { get; set; }
+
     }
 
     //House Image Details

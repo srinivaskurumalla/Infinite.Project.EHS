@@ -51,6 +51,8 @@ namespace EHS_API.Repositories
                 houseInDb.Landmark = obj.Landmark;
                 houseInDb.CityId = obj.CityId;
 
+                
+
                
 
                 _dbContext.Houses.Update(houseInDb);

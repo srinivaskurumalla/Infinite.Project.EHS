@@ -68,6 +68,7 @@ namespace EHS_API.Repositories
                 sellerInDb.LastName = obj.LastName;
                 sellerInDb.Email = obj.Email;
                 sellerInDb.PhoneNumber = obj.PhoneNumber;
+                
 
                
                 _dbContext.Sellers.Update(sellerInDb);
