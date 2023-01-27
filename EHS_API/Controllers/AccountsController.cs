@@ -30,32 +30,45 @@ namespace MovieStore.API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserDetails userDetails)
+        public async Task<IActionResult> Register(UserDetails userDetails,string password)
         {
             if (userDetails == null)
             {
                 return BadRequest();
             }
+
+            this.CreatePasswordHash(password, out byte[] passwordSalt, out byte[] passwordHash);
+            userDetails.PasswordHash = passwordHash;
+            userDetails.PasswordSalt = passwordSalt;
             _dbContext.Users.Add(userDetails);
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
 
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LoginModel login)
+        public IActionResult Login([FromBody] LoginDto login)
         {
-            //var currentUser = _dbContext.Users.FirstOrDefault(x => x.Username == login.Username && x.Password == login.Password);
-            var currentUser = _dbContext.Users.FirstOrDefault
-                (x => x.UserName == login.UserName && EF.Functions.Collate(x.Password, "SQL_Latin1_General_CP1_CS_AS") == login.Password);
+            var currentUser = _dbContext.Users.FirstOrDefault(x => x.UserName == login.UserName);
+
             if (currentUser == null)
             {
-                return NotFound("Invalid Username or Password");
+                return BadRequest("Invalid Username");
             }
+
+            var isValidPassword = VerifyPassword(login.Password, currentUser.PasswordSalt, currentUser.PasswordHash);
+
+            if (!isValidPassword)
+            {
+                return BadRequest("Invalid Password");
+            }
+
             var token = GenerateToken(currentUser);
+
             if (token == null)
             {
                 return NotFound("Invalid credentials");
             }
+
             return Ok(token);
         }
 
@@ -83,6 +96,26 @@ namespace MovieStore.API.Controllers
         {
             var UserName = User.FindFirstValue(ClaimTypes.Name);
             return Ok(UserName);
+        }
+
+        [NonAction]
+        public void CreatePasswordHash(string password, out byte[] passwordSalt, out byte[] passwordHash)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        [NonAction]
+        public bool VerifyPassword(string password, byte[] passwordSalt, byte[] passwordHash)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return hash.SequenceEqual(passwordHash);
+            }
         }
     }
 }
