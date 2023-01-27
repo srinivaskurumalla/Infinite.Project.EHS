@@ -13,11 +13,12 @@ namespace EHS_API.Controllers
     {
         private readonly IRepositories<Seller> _sellerRepository;
         private readonly IGetRepository<Seller> _getSellerRepositories;
-
-        public SellerController(IRepositories<Seller> sellerRepository, IGetRepository<Seller> getSellerRepositories)
+        private readonly IGetSellerRepository<House> _houseRepository;
+        public SellerController(IRepositories<Seller> sellerRepository, IGetRepository<Seller> getSellerRepositories,IGetSellerRepository<House> houseRepository)
         {
             _sellerRepository = sellerRepository;
             _getSellerRepositories = getSellerRepositories;
+            _houseRepository= houseRepository;
         }
 
         //Get All Sellers
@@ -82,6 +83,30 @@ namespace EHS_API.Controllers
                 return Ok(result);
             }
             return NotFound();
+        }
+
+        //get All houses of seller
+
+        [HttpGet("GetAllMyProperties/{id}")]
+        public async Task<IActionResult> GetAllMyProperties(int id)
+        {
+            var res= await _houseRepository.GetAllMyProperties(id);
+            if(res != null)
+            {
+                return Ok(res);
+            }
+            return NotFound("You dont have any propeeties");
+        }
+
+        [HttpGet("GetPropertiesByCity/{id}")]
+        public async Task<IActionResult> GetPropertiesByCity(int id,int cityId)
+        {
+            var res = await _houseRepository.GetPropertiesByCity(id,cityId);
+            if (res != null)
+            {
+                return Ok(res);
+            }
+            return NotFound("There are no properties in this city" );
         }
     }
 }

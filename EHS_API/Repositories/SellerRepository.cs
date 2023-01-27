@@ -1,11 +1,12 @@
 ﻿using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EHS_API.Repositories
 {
-    public class SellerRepository : IRepositories<Seller>, IGetRepository<Seller>
+    public class SellerRepository : IRepositories<Seller>, IGetRepository<Seller>,IGetSellerRepository<House>
     {
         private readonly ApplicationDbContext _dbContext;
         public SellerRepository(ApplicationDbContext dbContext)
@@ -76,6 +77,25 @@ namespace EHS_API.Repositories
                 return sellerInDb;
             }
             return null;
+        }
+
+         public async Task<IEnumerable<House>> GetAllMyProperties(int id)
+        {
+            var houses = await _dbContext.Houses.Where(h => h.SellerId == id).ToListAsync();
+            if(houses.Count> 0)
+                return houses;
+            else 
+                return null;
+        }
+        
+        public async Task<IEnumerable<House>> GetPropertiesByCity(int id, int cityId)
+        {
+            var houses = await _dbContext.Houses.Where(h => h.SellerId== id &&h.CityId == cityId).ToListAsync();
+            
+            if(houses.Count> 0)
+                 return houses;
+            else 
+                return null;
         }
     }
 }

@@ -45,8 +45,9 @@ namespace EHS_API
 
             services.AddScoped<IGetRepository<Seller>, SellerRepository>();
             services.AddScoped<IGetRepository<House>, HouseRepository>();
-            services.AddScoped<AdminRepository<House>, HouseRepository>();
+            services.AddScoped<IAdminRepository<House>, AdminRepository>();
             services.AddScoped<IGetRepository<HouseImage>, HouseImageRepository>();
+            services.AddScoped<IGetSellerRepository<House>, SellerRepository>();
 
             services.AddControllers();
            
