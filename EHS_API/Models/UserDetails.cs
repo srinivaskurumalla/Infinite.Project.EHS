@@ -49,11 +49,6 @@ namespace EHS_API.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Please enter the Password")]
-        [DataType(DataType.Password)]
-        [Compare(nameof(Password), ErrorMessage = "Password does not match.")]
-        public string ConfirmPassword { get; set; }
-
 
     }
 }

@@ -58,5 +58,9 @@ D:\Final Project\EHS_API\obj\Debug\net5.0\EHS_API.genruntimeconfig.cache
 D:\Final Project\EHS_API\obj\Debug\net5.0\ref\EHS_API.dll
 D:\Final Project\EHS_API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Final Project\EHS_API\bin\Debug\net5.0\Microsoft.IdentityModel.Abstractions.dll
-D:\Final Project\EHS_API\bin\Debug\net5.0\ref\EHS_API.dll
-D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\EHS_API.StaticWebAssets.xml
+D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\EHS_API.StaticWebAssets.Pack.cache
+D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.EHS_API.Microsoft.AspNetCore.StaticWebAssets.props
+D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.build.EHS_API.props
+D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.EHS_API.props
+D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.EHS_API.props
+D:\Final Project\EHS_API\obj\Debug\net5.0\refint\EHS_API.dll
