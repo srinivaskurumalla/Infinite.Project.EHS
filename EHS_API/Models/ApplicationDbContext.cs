@@ -21,5 +21,18 @@ namespace EHS_API.Models
         //admin part
         public DbSet<AdminModelClass> Admins { get; set; }
 
+        public DbSet<UserDetails> Users { get; set; }
+        public DbSet<UserRoles> Roles{ get; set; }
+
+        public DbSet<UserRoleMappings> UserRoleMpping { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserRoleMappings>()
+                .HasIndex(p => new { p.UserDetailsId, p.UserRolesId })
+                .IsUnique();
+        }
+
+
     }
 }

@@ -4,14 +4,16 @@ using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EHS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230127111047_InitializedUserAndRoles")]
+    partial class InitializedUserAndRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,6 +208,12 @@ namespace EHS_API.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -216,33 +224,14 @@ namespace EHS_API.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("RolesId");
+
+                    b.HasIndex("SellerId");
+
                     b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.UserRoleMappings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("UserDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserRolesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserRolesId");
-
-                    b.HasIndex("UserDetailsId", "UserRolesId")
-                        .IsUnique();
-
-                    b.ToTable("UserRoleMpping");
                 });
 
             modelBuilder.Entity("EHS_API.Models.UserRoles", b =>
@@ -302,23 +291,23 @@ namespace EHS_API.Migrations
                     b.Navigation("House");
                 });
 
-            modelBuilder.Entity("EHS_API.Models.UserRoleMappings", b =>
+            modelBuilder.Entity("EHS_API.Models.UserDetails", b =>
                 {
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
+                    b.HasOne("EHS_API.Models.UserRoles", "Roles")
                         .WithMany()
-                        .HasForeignKey("UserDetailsId")
+                        .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EHS_API.Models.UserRoles", "UserRoles")
+                    b.HasOne("EHS_API.Models.Seller", "seller")
                         .WithMany()
-                        .HasForeignKey("UserRolesId")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserDetails");
+                    b.Navigation("Roles");
 
-                    b.Navigation("UserRoles");
+                    b.Navigation("seller");
                 });
 
             modelBuilder.Entity("EHS_API.Models.City", b =>

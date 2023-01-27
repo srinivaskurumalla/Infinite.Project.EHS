@@ -4,14 +4,16 @@ using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EHS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230127114040_ModifiedUserDetailsTable2")]
+    partial class ModifiedUserDetailsTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,29 +224,6 @@ namespace EHS_API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EHS_API.Models.UserRoleMappings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("UserDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserRolesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserRolesId");
-
-                    b.HasIndex("UserDetailsId", "UserRolesId")
-                        .IsUnique();
-
-                    b.ToTable("UserRoleMpping");
-                });
-
             modelBuilder.Entity("EHS_API.Models.UserRoles", b =>
                 {
                     b.Property<int>("Id")
@@ -300,25 +279,6 @@ namespace EHS_API.Migrations
                         .IsRequired();
 
                     b.Navigation("House");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.UserRoleMappings", b =>
-                {
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
-                        .WithMany()
-                        .HasForeignKey("UserDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EHS_API.Models.UserRoles", "UserRoles")
-                        .WithMany()
-                        .HasForeignKey("UserRolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserDetails");
-
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("EHS_API.Models.City", b =>
