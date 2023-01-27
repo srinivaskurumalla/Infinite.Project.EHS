@@ -78,14 +78,14 @@ namespace EHS_API.Models
     }
 
     //House Image Details
-    [Consumes("multipart/form-data")]
+  
     public class HouseImage
     {
         public int Id { get; set; }
         [Required]
        
-        public byte[] Image { get; set; }
-
+        public string ImageUrl { get; set; }
+        public string ImageName { get; set; }
         //House Foreign key
         public int HouseId { get; set; }
         //navingation property

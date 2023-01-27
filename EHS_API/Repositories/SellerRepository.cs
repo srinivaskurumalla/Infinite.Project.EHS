@@ -22,6 +22,7 @@ namespace EHS_API.Repositories
                 _dbContext.Sellers.Add(obj);
                  await _dbContext.SaveChangesAsync();
             }
+           
         }
 
         //Get All Sellers

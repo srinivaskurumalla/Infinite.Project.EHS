@@ -2,11 +2,14 @@ using EHS_API.Models;
 using EHS_API.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -39,22 +42,18 @@ namespace EHS_API
             services.AddScoped<IRepositories<Seller>, SellerRepository>();
             services.AddScoped<IRepositories<House>, HouseRepository>();
             services.AddScoped<IRepositories<HouseImage>, HouseImageRepository>();
-           // services.AddScoped<IMovieRepository, MovieRepository>();
+
             services.AddScoped<IGetRepository<Seller>, SellerRepository>();
             services.AddScoped<IGetRepository<House>, HouseRepository>();
             services.AddScoped<IGetRepository<HouseImage>, HouseImageRepository>();
 
-          /*  //for adding image
-
-            services.AddMvc().AddMvcOptions(options => options.EnableEndpointRouting = false);
-
-            services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-            services.AddMvcCore().AddFormatterMappings().AddJsonFormatters();
-            services.AddControllersAsServices();
+            services.AddControllers();
+           
 
 
-            services.AddControllers().AddNewtonsoftJson();
-*/
+
+            services.Configure<FormOptions>(options => options.MultipartBodyLengthLimit = long.MaxValue);
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

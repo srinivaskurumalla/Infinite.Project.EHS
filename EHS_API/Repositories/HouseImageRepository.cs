@@ -1,12 +1,19 @@
 ﻿using EHS_API.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EHS_API.Repositories
 {
-    public class HouseImageRepository : IGetRepository<HouseImage>, IRepositories<HouseImage>
+
+    public class HouseImageRepository :  IGetRepository<HouseImage>,IRepositories<HouseImage>
     {
         private readonly ApplicationDbContext _dbContext;
         public HouseImageRepository(ApplicationDbContext dbContext)
@@ -16,23 +23,14 @@ namespace EHS_API.Repositories
 
         public async Task Create(HouseImage obj)
         {
-            if(obj!= null)
+            if (obj != null)
             {
                 _dbContext.HouseImages.Add(obj);
                 await _dbContext.SaveChangesAsync();
             }
-        }
-        public async Task<IEnumerable<HouseImage>> GetAll()
-        {
-            var images = await _dbContext.HouseImages.ToListAsync();
-            return images;
+           
         }
 
-        public async Task<HouseImage> GetById(int id)
-        {
-            var img =  await _dbContext.HouseImages.FirstOrDefaultAsync(img => img.Id == id);
-            return img;
-        }
         public async Task<HouseImage> Delete(int id)
         {
             var imageInDb = await _dbContext.HouseImages.FindAsync(id);
@@ -46,16 +44,29 @@ namespace EHS_API.Repositories
             return null;
         }
 
-      
+        public async Task<IEnumerable<HouseImage>> GetAll()
+        {
+            return await _dbContext.HouseImages.ToListAsync();
+        }
+
+        public async Task<HouseImage> GetById(int id)
+        {
+            var image= await _dbContext.HouseImages.FirstOrDefaultAsync(s => s.Id == id);
+            if (image != null)
+            {
+                return image;
+            }
+            return null;
+        }
 
         public async Task<HouseImage> Update(int id, HouseImage obj)
         {
             var imageInDb = await _dbContext.HouseImages.FindAsync(id);
             if (imageInDb != null)
             {
-                imageInDb.Image = obj.Image;
-               
-                imageInDb.HouseId = obj.HouseId;
+                imageInDb.ImageName = obj.ImageName;
+                imageInDb.ImageUrl = obj.ImageUrl;    
+                imageInDb.HouseId= obj.HouseId;
 
                 _dbContext.HouseImages.Update(imageInDb);
                 await _dbContext.SaveChangesAsync();
