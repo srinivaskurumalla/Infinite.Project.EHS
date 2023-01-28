@@ -4,14 +4,16 @@ using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EHS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230128035620_fixinpasswordhash")]
+    partial class fixinpasswordhash
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,20 +106,20 @@ namespace EHS_API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserDetailsId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("UserDetailsId");
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Houses");
                 });
@@ -146,6 +148,34 @@ namespace EHS_API.Migrations
                     b.ToTable("HouseImages");
                 });
 
+            modelBuilder.Entity("EHS_API.Models.Seller", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sellers");
+                });
+
             modelBuilder.Entity("EHS_API.Models.State", b =>
                 {
                     b.Property<int>("Id")
@@ -172,24 +202,11 @@ namespace EHS_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -265,15 +282,15 @@ namespace EHS_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
+                    b.HasOne("EHS_API.Models.Seller", "Seller")
                         .WithMany("Houses")
-                        .HasForeignKey("UserDetailsId")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("City");
 
-                    b.Navigation("UserDetails");
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("EHS_API.Models.HouseImage", b =>
@@ -316,14 +333,14 @@ namespace EHS_API.Migrations
                     b.Navigation("HouseImages");
                 });
 
+            modelBuilder.Entity("EHS_API.Models.Seller", b =>
+                {
+                    b.Navigation("Houses");
+                });
+
             modelBuilder.Entity("EHS_API.Models.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.UserDetails", b =>
-                {
-                    b.Navigation("Houses");
                 });
 #pragma warning restore 612, 618
         }

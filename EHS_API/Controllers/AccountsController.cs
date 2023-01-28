@@ -14,7 +14,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace MovieStore.API.Controllers
+namespace EHS_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -30,14 +30,14 @@ namespace MovieStore.API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserDetails userDetails,string password)
+        public async Task<IActionResult> Register(UserDetails userDetails)
         {
             if (userDetails == null)
             {
                 return BadRequest();
             }
 
-            this.CreatePasswordHash(password, out byte[] passwordSalt, out byte[] passwordHash);
+            this.CreatePasswordHash(userDetails.Password, out byte[] passwordSalt, out byte[] passwordHash);
             userDetails.PasswordHash = passwordHash;
             userDetails.PasswordSalt = passwordSalt;
             _dbContext.Users.Add(userDetails);
@@ -46,7 +46,7 @@ namespace MovieStore.API.Controllers
         }
 
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LoginDto login)
+        public IActionResult Login([FromBody] UserLogin login)
         {
             var currentUser = _dbContext.Users.FirstOrDefault(x => x.UserName == login.UserName);
 
@@ -76,7 +76,7 @@ namespace MovieStore.API.Controllers
         public string GenerateToken(UserDetails userDetails)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var myClaims = new List<Claim>
             {
@@ -91,7 +91,7 @@ namespace MovieStore.API.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [HttpGet("GetName"), Authorize]
+        [HttpGet("GetName")]
         public IActionResult GetName()
         {
             var UserName = User.FindFirstValue(ClaimTypes.Name);
