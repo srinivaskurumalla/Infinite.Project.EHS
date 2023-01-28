@@ -82,7 +82,8 @@ namespace EHS_API.Controllers
             {
                 new Claim(ClaimTypes.Name,userDetails.UserName),
                 new Claim(ClaimTypes.Email, userDetails.Email),
-               
+                 new Claim(ClaimTypes.GivenName, userDetails.FullName),
+
             };
 
             var token = new JwtSecurityToken(issuer: _configuration["JWT:issuer"],
@@ -95,8 +96,8 @@ namespace EHS_API.Controllers
         [HttpGet("GetName"), Authorize]
         public IActionResult GetName()
         {
-            var UserName = User.FindFirstValue(ClaimTypes.Name);
-            return Ok(UserName);
+            var FullName = User.FindFirstValue(ClaimTypes.GivenName);
+            return Ok(FullName);
         }
 
         [NonAction]

@@ -3,8 +3,11 @@ using EHS_API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 
@@ -20,7 +23,38 @@ namespace EHS_API.Controllers
             _adminRepository = adminRepository;
         }
 
-        [HttpGet("GetAllProperties")]
+        [HttpGet("GetProperties/{selectedValue}")]
+       // [ApiExplorerSettings(IgnoreApi = true)]
+
+        public async Task<IEnumerable<House>> GetData( string selectedValue = "All")
+        {
+            if (selectedValue == "All")
+            {
+                return await _adminRepository.GetAll();
+            }
+            else if (selectedValue == "Rejected")
+            {
+                return await _adminRepository.GetAllRejected();
+            }
+            else if (selectedValue == "Pending")
+            {
+                return await _adminRepository.GetAllPendings();
+            }
+            else if (selectedValue == "Approved")
+            {
+                return await _adminRepository.GetAllApproved();
+            }
+            return await _adminRepository.GetAll(); ;
+           
+        }
+
+
+
+
+
+
+/*
+                [HttpGet("GetAllProperties")]
         public async Task<IEnumerable<House>> GetAllProperties()
         {
             return await _adminRepository.GetAll();
@@ -42,7 +76,7 @@ namespace EHS_API.Controllers
         public async Task<IEnumerable<House>> GetAllApproved()
         {
             return await _adminRepository.GetAllApproved() ;
-        }
+        }*/
 
 
         [HttpPut("RejectHouse/{id}")]
