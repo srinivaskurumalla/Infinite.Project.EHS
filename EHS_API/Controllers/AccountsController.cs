@@ -30,7 +30,7 @@ namespace EHS_API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserDetails userDetails)
+        public async Task<IActionResult> Register([FromBody]UserDetails userDetails)
         {
             if (userDetails == null)
             {

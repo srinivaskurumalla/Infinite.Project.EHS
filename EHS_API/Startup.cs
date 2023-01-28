@@ -1,4 +1,5 @@
 using EHS_API.Models;
+using EHS_API.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,8 +46,19 @@ namespace EHS_API
             //configuration connection string information
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("EHSconnection")));
 
+            //Resoleve DI
+            services.AddScoped<IRepositories<UserDetails>, SellerRepository>();
+            services.AddScoped<IRepositories<House>, HouseRepository>();
+            services.AddScoped<IRepositories<HouseImage>, HouseImageRepository>();
+
+            services.AddScoped<IGetRepository<UserDetails>, SellerRepository>();
+            services.AddScoped<IGetRepository<House>, HouseRepository>();
+            services.AddScoped<IAdminRepository<House>, AdminRepository>();
+            services.AddScoped<IGetRepository<HouseImage>, HouseImageRepository>();
+            services.AddScoped<IGetSellerRepository<House>, SellerRepository>();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EHS_API", Version = "v1" });
