@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,13 +26,18 @@ namespace EHS_API.Models
         [EmailAddress(ErrorMessage = "please enter a valid email address")]
         public string Email { get; set; }
 
-        //Reference
-      /*  public Seller seller { get; set; }
-        public int SellerId { get; set; }
-*/
-      //  public UserRoles Roles { get; set; }
 
-      //  public int RolesId { get; set; }
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string FullName { get; set; }
+
+        [Required]
+        public string Role { get; set; }
+
+        public ICollection<House> Houses { get; set; }
 
     }
 

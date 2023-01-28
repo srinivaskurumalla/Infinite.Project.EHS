@@ -6,29 +6,22 @@ using System.ComponentModel.DataAnnotations;
 namespace EHS_API.Models
 {
     //Seller Details
-    public class Seller
+   /* public class Seller
     {
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+      
 
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [Phone]
-        public string PhoneNumber { get; set; }
 
        
         public ICollection<House> Houses { get; set; }
 
        
      
-    }
+    }*/
 
     //House Details
     public class House
@@ -66,11 +59,11 @@ namespace EHS_API.Models
         public DateTime UploadDate { get; set; }
 
         //Seller Foreign key
-        public int SellerId { get; set; }
+        public int UserDetailsId { get; set; }
         public int CityId { get; set; }
 
         //navingation property
-        public Seller Seller { get; set; }
+        public UserDetails UserDetails { get; set; }
         public City City { get; set; }
        // public int HouseImageId { get; set; }
         public ICollection<HouseImage> HouseImages { get; set; }

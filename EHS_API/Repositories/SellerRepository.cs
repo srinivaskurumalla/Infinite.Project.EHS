@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EHS_API.Repositories
 {
-    public class SellerRepository : IRepositories<Seller>, IGetRepository<Seller>,IGetSellerRepository<House>
+    public class SellerRepository : IRepositories<UserDetails>, IGetRepository<UserDetails>,IGetSellerRepository<House>
     {
         private readonly ApplicationDbContext _dbContext;
         public SellerRepository(ApplicationDbContext dbContext)
@@ -16,27 +16,27 @@ namespace EHS_API.Repositories
 
 
         //Create new seller
-        public async Task Create(Seller obj)
+        public async Task Create(UserDetails obj)
         {
             if (obj != null)
             {
-                _dbContext.Sellers.Add(obj);
+                _dbContext.Users.Add(obj);
                  await _dbContext.SaveChangesAsync();
             }
            
         }
 
         //Get All Sellers
-        public async Task<IEnumerable<Seller>> GetAll()
+        public async Task<IEnumerable<UserDetails>> GetAll()
         {
-            var sellers = await _dbContext.Sellers.ToListAsync();
+            var sellers = await _dbContext.Users.ToListAsync();
             return sellers;
         }
 
         //Get seller by id
-        public async Task<Seller> GetById(int id)
+        public async Task<UserDetails> GetById(int id)
         {
-            var seller = await _dbContext.Sellers.FirstOrDefaultAsync(s => s.Id == id);
+            var seller = await _dbContext.Users.FirstOrDefaultAsync(s => s.Id == id);
             if (seller != null)
             {
                 return seller;
@@ -45,12 +45,12 @@ namespace EHS_API.Repositories
         }
 
         //delete seller
-        public async Task<Seller> Delete(int id)
+        public async Task<UserDetails> Delete(int id)
         {
-            var sellerInDb = await _dbContext.Sellers.FindAsync(id);
+            var sellerInDb = await _dbContext.Users.FindAsync(id);
             if (sellerInDb != null)
             {
-                _dbContext.Sellers.Remove(sellerInDb);
+                _dbContext.Users.Remove(sellerInDb);
                 await _dbContext.SaveChangesAsync();
 
                 return sellerInDb;
@@ -60,19 +60,19 @@ namespace EHS_API.Repositories
 
        
 
-        public async Task<Seller> Update(int id, Seller obj)
+        public async Task<UserDetails> Update(int id, UserDetails obj)
         {
-            var sellerInDb = await _dbContext.Sellers.FindAsync(id);
+            var sellerInDb = await _dbContext.Users.FindAsync(id);
             if (sellerInDb != null)
             {
-                sellerInDb.FirstName = obj.FirstName;
-                sellerInDb.LastName = obj.LastName;
+                sellerInDb.FullName = obj.FullName;
+               // sellerInDb.LastName = obj.LastName;
                 sellerInDb.Email = obj.Email;
                 sellerInDb.PhoneNumber = obj.PhoneNumber;
                 
 
                
-                _dbContext.Sellers.Update(sellerInDb);
+                _dbContext.Users.Update(sellerInDb);
                 await _dbContext.SaveChangesAsync();
                 return sellerInDb;
             }
@@ -81,7 +81,7 @@ namespace EHS_API.Repositories
 
          public async Task<IEnumerable<House>> GetAllMyProperties(int id)
         {
-            var houses = await _dbContext.Houses.Where(h => h.SellerId == id).ToListAsync();
+            var houses = await _dbContext.Houses.Where(h => h.UserDetailsId == id).ToListAsync();
             if(houses.Count> 0)
                 return houses;
             else 
@@ -90,7 +90,7 @@ namespace EHS_API.Repositories
         
         public async Task<IEnumerable<House>> GetPropertiesByCity(int id, int cityId)
         {
-            var houses = await _dbContext.Houses.Where(h => h.SellerId== id &&h.CityId == cityId).ToListAsync();
+            var houses = await _dbContext.Houses.Where(h => h.UserDetailsId == id &&h.CityId == cityId).ToListAsync();
             
             if(houses.Count> 0)
                  return houses;

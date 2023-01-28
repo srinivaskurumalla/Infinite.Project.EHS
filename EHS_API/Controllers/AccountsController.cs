@@ -82,6 +82,7 @@ namespace EHS_API.Controllers
             {
                 new Claim(ClaimTypes.Name,userDetails.UserName),
                 new Claim(ClaimTypes.Email, userDetails.Email),
+               
             };
 
             var token = new JwtSecurityToken(issuer: _configuration["JWT:issuer"],

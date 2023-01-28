@@ -53,11 +53,11 @@ namespace EHS_API
 
 
             //Resoleve DI
-            services.AddScoped<IRepositories<Seller>, SellerRepository>();
+            services.AddScoped<IRepositories<UserDetails>, SellerRepository>();
             services.AddScoped<IRepositories<House>, HouseRepository>();
             services.AddScoped<IRepositories<HouseImage>, HouseImageRepository>();
 
-            services.AddScoped<IGetRepository<Seller>, SellerRepository>();
+            services.AddScoped<IGetRepository<UserDetails>, SellerRepository>();
             services.AddScoped<IGetRepository<House>, HouseRepository>();
             services.AddScoped<IAdminRepository<House>, AdminRepository>();
             services.AddScoped<IGetRepository<HouseImage>, HouseImageRepository>();

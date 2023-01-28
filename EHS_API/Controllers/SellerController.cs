@@ -11,10 +11,10 @@ namespace EHS_API.Controllers
     [ApiController]
     public class SellerController : ControllerBase
     {
-        private readonly IRepositories<Seller> _sellerRepository;
-        private readonly IGetRepository<Seller> _getSellerRepositories;
+        private readonly IRepositories<UserDetails> _sellerRepository;
+        private readonly IGetRepository<UserDetails> _getSellerRepositories;
         private readonly IGetSellerRepository<House> _houseRepository;
-        public SellerController(IRepositories<Seller> sellerRepository, IGetRepository<Seller> getSellerRepositories,IGetSellerRepository<House> houseRepository)
+        public SellerController(IRepositories<UserDetails> sellerRepository, IGetRepository<UserDetails> getSellerRepositories,IGetSellerRepository<House> houseRepository)
         {
             _sellerRepository = sellerRepository;
             _getSellerRepositories = getSellerRepositories;
@@ -23,7 +23,7 @@ namespace EHS_API.Controllers
 
         //Get All Sellers
         [HttpGet("GetAllSellers")]
-        public async Task<IEnumerable<Seller>> GetAllSellers()
+        public async Task<IEnumerable<UserDetails>> GetAllSellers()
         {
             return await _getSellerRepositories.GetAll();
         }
@@ -44,7 +44,7 @@ namespace EHS_API.Controllers
 
         //Add new Seller
         [HttpPost("CreateSeller")]
-        public async Task<IActionResult> CreateHouse([FromBody] Seller seller)
+        public async Task<IActionResult> CreateHouse([FromBody] UserDetails seller)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace EHS_API.Controllers
 
         //update seller
         [HttpPut("UpdateSeller/{id}")]
-        public async Task<IActionResult> UpdateSeller(int id, [FromBody] Seller seller)
+        public async Task<IActionResult> UpdateSeller(int id, [FromBody] UserDetails seller)
         {
             if (!ModelState.IsValid)
             {

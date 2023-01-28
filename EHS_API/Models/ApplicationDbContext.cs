@@ -11,7 +11,7 @@ namespace EHS_API.Models
 
         //Add References
         //seller part
-        public DbSet<Seller> Sellers { get; set; }
+       // public DbSet<Seller> Sellers { get; set; }
         public DbSet<House> Houses { get; set; }
         public DbSet<HouseImage> HouseImages { get; set; }
 
