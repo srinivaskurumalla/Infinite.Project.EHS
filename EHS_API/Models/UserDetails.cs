@@ -8,15 +8,11 @@ namespace EHS_API.Models
 {
     [Index(nameof(Email), IsUnique = true)]
     [Index(nameof(UserName), IsUnique = true)]
-    public class UserDetails
+    public class UserDetails : UserLogin
     {
         [Required]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please enter the User Name")]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "User name should be minimum of 3 characters and maximum of 50 characters")]
-        public string UserName { get; set; }
 
         public byte[] PasswordSalt { get; set; }
 
@@ -41,7 +37,7 @@ namespace EHS_API.Models
 
     }
 
-    public class LoginDto
+    public class UserLogin
     {
 
 
@@ -53,7 +49,16 @@ namespace EHS_API.Models
         [Required(ErrorMessage = "Please enter the Password")]
         [StringLength(100, MinimumLength = 4, ErrorMessage = "Password is too short.")]
         [DataType(DataType.Password)]
+        [NotMapped]
         public string Password { get; set; }
+
+        //[Required(ErrorMessage = "Please enter the Password")]
+        //[StringLength(100, MinimumLength = 4, ErrorMessage = "Password is too short.")]
+        //[DataType(DataType.Password)]
+        //[Compare(nameof(Password),ErrorMessage ="Password does not match")]
+        //[NotMapped]
+        //public string ConfirmPassword { get; set; }
+
 
 
     }
