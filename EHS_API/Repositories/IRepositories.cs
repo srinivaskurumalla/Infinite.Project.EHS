@@ -45,4 +45,14 @@ namespace EHS_API.Repositories
         Task<IEnumerable<T>> GetAll();
 
     }*/
+
+    public interface ISellerDtoRepository<T> where T : class
+    {
+        Task<T> GetSellerDetails(int id);
+    }
+
+    public interface ICityRepository<T> where T : class
+    {
+        Task<IEnumerable<T>> GetAllHouseByCityId(int id);
+    }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EHS_API.Repositories
 {
-    public class HouseRepository : IRepositories<House>, IGetRepository<House>
+    public class HouseRepository : IRepositories<House>, IGetRepository<House>,ICityRepository<House>
     {
         private readonly ApplicationDbContext _dbContext;
         public HouseRepository(ApplicationDbContext dbContext)
@@ -81,6 +81,12 @@ namespace EHS_API.Repositories
             return null;
         }
 
-      
+        public async Task<IEnumerable<House>> GetAllHouseByCityId(int id)
+        {
+            var houses = await _dbContext.Houses.Where(h => h.CityId== id).ToListAsync();
+            if(houses.Count>0)
+                return houses;
+            return null;
+        }
     }
 }

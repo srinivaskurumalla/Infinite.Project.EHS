@@ -1,4 +1,5 @@
-﻿using EHS_API.Models;
+﻿using EHS_API.DTO;
+using EHS_API.Models;
 using EHS_API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace EHS_API.Controllers
         private readonly IRepositories<UserDetails> _sellerRepository;
         private readonly IGetRepository<UserDetails> _getSellerRepositories;
         private readonly IGetSellerRepository<House> _houseRepository;
-        public SellerController(IRepositories<UserDetails> sellerRepository, IGetRepository<UserDetails> getSellerRepositories,IGetSellerRepository<House> houseRepository)
+        private readonly ISellerDtoRepository<SellerHouseDto> _sellerDto;
+        public SellerController(IRepositories<UserDetails> sellerRepository, IGetRepository<UserDetails> getSellerRepositories,IGetSellerRepository<House> houseRepository,ISellerDtoRepository<SellerHouseDto> sellerDto)
         {
             _sellerRepository = sellerRepository;
             _getSellerRepositories = getSellerRepositories;
             _houseRepository= houseRepository;
+            _sellerDto = sellerDto;
         }
 
         //Get All Sellers
@@ -107,6 +110,17 @@ namespace EHS_API.Controllers
                 return Ok(res);
             }
             return NotFound("There are no properties in this city" );
+        }
+
+        [HttpGet("GetSellerDetails/{id}")]
+        public async Task<IActionResult> GetSellerDetails(int id)
+        {
+            var res = await _sellerDto.GetSellerDetails(id);
+            if(res != null)
+            {
+                return Ok(res);
+            }
+            return NotFound("No details found");
         }
     }
 }

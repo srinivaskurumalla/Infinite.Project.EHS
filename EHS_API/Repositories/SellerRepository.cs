@@ -1,4 +1,5 @@
-﻿using EHS_API.Models;
+﻿using EHS_API.DTO;
+using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EHS_API.Repositories
 {
-    public class SellerRepository : IRepositories<UserDetails>, IGetRepository<UserDetails>,IGetSellerRepository<House>
+    public class SellerRepository : IRepositories<UserDetails>, IGetRepository<UserDetails>,IGetSellerRepository<House>,ISellerDtoRepository<SellerHouseDto>
     {
         private readonly ApplicationDbContext _dbContext;
         public SellerRepository(ApplicationDbContext dbContext)
@@ -96,6 +97,27 @@ namespace EHS_API.Repositories
                  return houses;
             else 
                 return null;
+        }
+
+        public async Task<SellerHouseDto> GetSellerDetails(int id)
+        {
+            var sellerHouseDto = await _dbContext.Houses.Include(h => h.UserDetails).Select(h => new SellerHouseDto
+            {
+                HouseId = h.Id,
+                Address= h.Address,
+                CityId = h.CityId,
+                PriceRange= h.PriceRange,
+                PhoneNumber = h.UserDetails.PhoneNumber,
+                Email= h.UserDetails.Email,
+                CityName=h.City.CityName,
+                UserDetailsId=h.UserDetailsId,
+                UserName=h.UserDetails.UserName
+
+            }).ToListAsync();
+
+            var sellerDetails = sellerHouseDto.FirstOrDefault(s => s.HouseId == id);
+
+            return sellerDetails;
         }
     }
 }

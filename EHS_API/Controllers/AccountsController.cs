@@ -30,14 +30,14 @@ namespace EHS_API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserDetails userDetails, string password)
+        public async Task<IActionResult> Register([FromBody] UserDetails userDetails)
         {
             if (userDetails == null)
             {
                 return BadRequest();
             }
 
-            this.CreatePasswordHash(password, out byte[] passwordSalt, out byte[] passwordHash);
+            this.CreatePasswordHash(userDetails.Password, out byte[] passwordSalt, out byte[] passwordHash);
             userDetails.PasswordHash = passwordHash;
             userDetails.PasswordSalt = passwordSalt;
             _dbContext.Users.Add(userDetails);
@@ -46,7 +46,7 @@ namespace EHS_API.Controllers
         }
 
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LoginDto login)
+        public IActionResult Login([FromBody] UserLogin login)
         {
             var currentUser = _dbContext.Users.FirstOrDefault(x => x.UserName == login.UserName);
 
@@ -76,14 +76,12 @@ namespace EHS_API.Controllers
         public string GenerateToken(UserDetails userDetails)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var myClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name,userDetails.UserName),
                 new Claim(ClaimTypes.Email, userDetails.Email),
-                 new Claim(ClaimTypes.GivenName, userDetails.FullName),
-
             };
 
             var token = new JwtSecurityToken(issuer: _configuration["JWT:issuer"],
@@ -93,11 +91,11 @@ namespace EHS_API.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [HttpGet("GetName"), Authorize]
+        [HttpGet("GetName")]
         public IActionResult GetName()
         {
-            var FullName = User.FindFirstValue(ClaimTypes.GivenName);
-            return Ok(FullName);
+            var UserName = User.FindFirstValue(ClaimTypes.Name);
+            return Ok(UserName);
         }
 
         [NonAction]
@@ -119,33 +117,5 @@ namespace EHS_API.Controllers
                 return hash.SequenceEqual(passwordHash);
             }
         }
-/*
-        [NonAction]
-        public ActionResult RolesAndUsers()
-        {
-            var userAndRoles = (from user in _dbContext.Users
-                                join userRole in _dbContext.UserRolesMappings on user.Id equals userRole.UserId
-                                join role in _dbContext.Roles on userRole.RoleId equals role.Id
-                                orderby role.RoleName ascending
-                                select new UsersAndRoles
-                        public ActionResult RolesAndUsers()
-            {
-                var userAndRoles = (from user in _dbContext.Users
-                                    join userRole in _dbContext.UserRolesMappings on user.Id equals userRole.UserId
-                                    join role in _dbContext.Roles on userRole.RoleId equals role.Id
-                                    orderby role.RoleName ascending
-                                    select new UsersAndRoles
-                                    {
-                                        Username = user.Name,
-                                        RoleName = role.RoleName
-                                    }).ToList();
-                return View("RolesAndUsers", userAndRoles);
-            }
-            {
-                                    Username = user.Name,
-                                    RoleName = role.RoleName
-                                }).ToList();
-            return View("RolesAndUsers", userAndRoles);
-        }*/
     }
 }
