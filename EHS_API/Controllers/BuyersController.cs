@@ -75,11 +75,11 @@ namespace EHS_API.Controllers
 
         }
 
-        [HttpPost("AddToMyCart")]
-        public async Task<IActionResult> AddToMyCart([FromBody]BuyerCartModel model)
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody]BuyerCartModel model)
         {
            var res = await _BuyerCartRepository.CheckCartExistence(model);
-            if(res!=null)
+            if(res==null)
             {
                 await _BuyerCartRepository.AddToCart(model);
                 return CreatedAtAction("GetHouseDetails", new { Id = model.Id }, model);
@@ -106,7 +106,7 @@ namespace EHS_API.Controllers
             return await _BuyerRepository.GetAllApproved();
         }
 
-        [HttpGet("GetUserId")]
+        [HttpGet("GetUserId/{userName}")]
         public async Task<UserDetails> GetUserId(string userName)
         {
             return await _UserDetailsRepository.GetUserId(userName);
