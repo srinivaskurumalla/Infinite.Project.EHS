@@ -1,5 +1,6 @@
 using EHS_API.Models;
 using EHS_API.Repositories;
+using EHS_API.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,6 +57,9 @@ namespace EHS_API
             services.AddScoped<IAdminRepository<House>, AdminRepository>();
             services.AddScoped<IGetRepository<HouseImage>, HouseImageRepository>();
             services.AddScoped<IGetSellerRepository<House>, SellerRepository>();
+            services.AddScoped<IGetBuyerRepository<House>, BuyerRepository>();
+            services.AddScoped<IGetBuyerCartRepository<BuyerCartModel>, BuyerRepository>();
+            services.AddScoped<IGetUserDetailsRepository<UserDetails>, BuyerRepository>();
 
             services.AddControllers();
 

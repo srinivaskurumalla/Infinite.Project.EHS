@@ -4,14 +4,16 @@ using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EHS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230128144750_AddedBuyerCartTable")]
+    partial class AddedBuyerCartTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,15 +49,9 @@ namespace EHS_API.Migrations
                     b.Property<int>("HouseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserDetaisId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HouseId");
-
-                    b.HasIndex("UserDetaisId", "HouseId")
-                        .IsUnique();
 
                     b.ToTable("BuyerCarts");
                 });
@@ -277,15 +273,7 @@ namespace EHS_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
-                        .WithMany()
-                        .HasForeignKey("UserDetaisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("House");
-
-                    b.Navigation("UserDetails");
                 });
 
             modelBuilder.Entity("EHS_API.Models.City", b =>

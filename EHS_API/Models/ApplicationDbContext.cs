@@ -30,8 +30,16 @@ namespace EHS_API.Models
             modelBuilder.Entity<UserRoleMappings>()
                 .HasIndex(p => new { p.UserDetailsId, p.UserRolesId })
                 .IsUnique();
+
+            //For BuyerCartModel
+            modelBuilder.Entity<BuyerCartModel>()
+                .HasIndex(p => new { p.UserDetaisId, p.HouseId })
+                .IsUnique();
         }
 
+        //Buyer part
+        public DbSet<BuyerCartModel> BuyerCarts { get; set;}
+       
 
     }
 }
