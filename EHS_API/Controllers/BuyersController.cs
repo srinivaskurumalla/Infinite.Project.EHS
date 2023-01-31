@@ -89,10 +89,10 @@ namespace EHS_API.Controllers
            
         }
 
-        [HttpDelete("DeleteFromCart")]
-        public async Task<IActionResult> DeleteFromCart(int HouseId,int UserDetailsId)
+        [HttpDelete("DeleteFromCart/{houseId},{UserDetailsId}")]
+        public async Task<IActionResult> DeleteFromCart(int houseId,int UserDetailsId)
         {
-            var res = await _BuyerCartRepository.DeleteFromCart(HouseId,UserDetailsId);
+            var res = await _BuyerCartRepository.DeleteFromCart(houseId,UserDetailsId);
             if (res != null)
             {
                 return Ok(res);
