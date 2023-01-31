@@ -1,5 +1,6 @@
 ﻿using EHS_API.Models;
 using EHS_API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,8 @@ namespace EHS_API.Controllers
         }
 
         [HttpGet("GetProperties/{selectedValue}")]
-       // [ApiExplorerSettings(IgnoreApi = true)]
-
+        // [ApiExplorerSettings(IgnoreApi = true)]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IEnumerable<House>> GetData( string selectedValue = "All")
         {
             if (selectedValue == "All")
@@ -53,33 +54,9 @@ namespace EHS_API.Controllers
 
 
 
-/*
-                [HttpGet("GetAllProperties")]
-        public async Task<IEnumerable<House>> GetAllProperties()
-        {
-            return await _adminRepository.GetAll();
-        }
-
-        [HttpGet("GetAllPendings")]
-        public async Task<IEnumerable<House>> GetAllPendings()
-        {
-            return await _adminRepository.GetAllPendings();
-        }
-
-        [HttpGet("GetAllRejected")]
-        public async Task<IEnumerable<House>> GetAllRejected()
-        {
-            return await _adminRepository.GetAllRejected();
-        }
-
-        [HttpGet("GetAllApproved")]
-        public async Task<IEnumerable<House>> GetAllApproved()
-        {
-            return await _adminRepository.GetAllApproved() ;
-        }*/
-
 
         [HttpPut("RejectHouse/{id}")]
+        [Authorize(Roles ="ADMIN")]
         public async Task<IActionResult> RejectHouse(int id)
         {
             var res = await _adminRepository.Reject(id);
@@ -92,6 +69,7 @@ namespace EHS_API.Controllers
         }
 
         [HttpPut("ApproveHouse/{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> ApproveHouse(int id)
         {
             var res = await _adminRepository.Approve(id);
