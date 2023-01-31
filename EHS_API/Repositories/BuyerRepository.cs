@@ -50,7 +50,7 @@ namespace EHS_API.Repositories
             return pendings;
         }
 
-        //To Show all the houses in the cart
+        //To Show all the houseId in the cart
         public async Task<IEnumerable<BuyerCartModel>> GetAllMyCart(int id)
         {
             var houses = await _dbContext.BuyerCarts.Where(h => h.UserDetaisId == id).ToListAsync();
@@ -59,9 +59,6 @@ namespace EHS_API.Repositories
             else
                 return null;
         }
-
-
-
         //Getting Houses by Id so that the buyer can get any house details on clicking the house itself.
         public async Task<House> GetById(int id)
         {
