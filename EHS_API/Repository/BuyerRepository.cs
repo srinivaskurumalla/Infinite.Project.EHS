@@ -59,16 +59,6 @@ namespace EHS_API.Repository
             else
                 return null;
         }
-
-        //To show all the house details using houseId
-        public async Task<IEnumerable<House>> GetAllHousesById(List<BuyerCartModel> houseIds)
-        {
-            var houses = await _dbContext.Houses.ToListAsync();
-
-        }
-
-
-
         //Getting Houses by Id so that the buyer can get any house details on clicking the house itself.
         public async Task<House> GetById(int id)
         {

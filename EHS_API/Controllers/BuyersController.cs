@@ -111,5 +111,11 @@ namespace EHS_API.Controllers
         {
             return await _UserDetailsRepository.GetUserId(userName);
         }
+
+        [HttpGet("GetAllHousesforBuyer")]
+        public async Task<IEnumerable<House>> GetAllHousesforBuyer()
+        {
+            return await _BuyerRepository.GetAllApproved();
+        }
     }
 }
