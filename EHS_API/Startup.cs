@@ -43,6 +43,7 @@ namespace EHS_API
           o.TokenValidationParameters = new TokenValidationParameters
           {
               ValidateIssuer = true,
+              ValidateAudience = false,
               ValidateLifetime = true,
               ValidateIssuerSigningKey = true,
               ValidIssuer = Configuration["JWT:issuer"],
@@ -69,6 +70,12 @@ namespace EHS_API
             services.AddScoped<ICityRepository<House>, HouseRepository>();
             // services.AddScoped<ICityRepository<House>, HouseRepository>();
             services.AddScoped<IGetRepository<City>, CityRepository>();
+
+
+            services.AddScoped<IGetBuyerRepository<House>, BuyerRepository>();
+            services.AddScoped<IGetBuyerCartRepository<BuyerCartModel>, BuyerRepository>();
+            services.AddScoped<IGetUserDetailsRepository<UserDetails>, BuyerRepository>();
+
 
             services.AddControllers();
            

@@ -68,7 +68,7 @@ namespace EHS_API.Repositories
             var houses = await _dbContext.Houses.ToListAsync();
             return houses;
         }
-
+      
 
         //get house by Id
         public async Task<House> GetById(int id)
@@ -87,6 +87,15 @@ namespace EHS_API.Repositories
             if(houses.Count>0)
                 return houses;
             return null;
+        }
+
+        public async Task<IEnumerable<House>> GetAllHousesBySellerName(string sellerName)
+        {
+            var houses = await _dbContext.Houses.Where(h => h.UserDetails.UserName == sellerName).ToListAsync();
+            if (houses.Count > 0)
+                return houses;
+            else
+                return null;
         }
     }
 }

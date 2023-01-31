@@ -1,5 +1,6 @@
 ﻿using EHS_API.Models;
 using EHS_API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -24,13 +25,24 @@ namespace EHS_API.Controllers
         }
 
         //Get All Houses
+      
         [HttpGet("GetAllHouses")]
         public async Task<IEnumerable<House>> GetAllHouses()
         {
             return await _getHouseRepositories.GetAll();
         }
-
-
+       
+        [HttpGet("GetAllHousesBySellerName/{sellerName}")]
+        public async Task<IActionResult> GetAllHousesBySellerId(string sellerName)
+        {
+            var houses = await _cityRepository.GetAllHousesBySellerName(sellerName);
+            if (houses != null)
+            {
+                return Ok(houses);
+            }
+            return NotFound("No houses in this city");
+          // return await _cityRepository.GetAllHousesBySellerId();
+        }
         [HttpGet]
         [Route("GetHouseById/{id}", Name = "GetHouseById")]
         public async Task<IActionResult> GetHouseById(int id)
@@ -42,13 +54,14 @@ namespace EHS_API.Controllers
             }
             return NotFound();
         }
-
+      
         //Add House
         [HttpPost("CreateHouse")]
         public async Task<IActionResult> CreateHouse([FromBody] House house)
         {
             if(ModelState.IsValid)
             {
+                house.Status ??= "PENDING";
                 await _houseRepositories.Create(house);
                 return CreatedAtAction("GetHouseById", new { id = house.Id }, house);
             }
@@ -57,7 +70,7 @@ namespace EHS_API.Controllers
         }
 
         //delete house
-
+      
         [HttpDelete("DeleteHouse/{id}")]
         public async Task<IActionResult> DeleteHouse(int id)
         {
@@ -69,7 +82,7 @@ namespace EHS_API.Controllers
             return NotFound("House with id " + id + " not available");
         }
 
-
+      
         //update house
         [HttpPut("UpdateHouse/{id}")]
         public async Task<IActionResult> UpdateHouse(int id, [FromBody] House house)

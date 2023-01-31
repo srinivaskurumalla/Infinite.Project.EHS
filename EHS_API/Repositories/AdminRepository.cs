@@ -17,14 +17,14 @@ namespace EHS_API.Repositories
         public async Task<IEnumerable<House>> GetAll()
         {
 
-            var pendings = await _dbContext.Houses.Where(h => h.Status == null || h.Status == "REJECTED" || h.Status == "APPROVED").ToListAsync();
+            var pendings = await _dbContext.Houses.Where(h => h.Status == null || h.Status == "PENDING" || h.Status == "REJECTED" || h.Status == "APPROVED").ToListAsync();
             return pendings;
         }
 
         public async Task<IEnumerable<House>> GetAllPendings()
         {
 
-            var pendings = await _dbContext.Houses.Where(h => h.Status == null ).ToListAsync();
+            var pendings = await _dbContext.Houses.Where(h => h.Status == null || h.Status == "PENDING" ).ToListAsync();
             return pendings;
         }
         public async Task<IEnumerable<House>> GetAllRejected()

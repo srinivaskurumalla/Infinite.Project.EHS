@@ -54,5 +54,29 @@ namespace EHS_API.Repositories
     public interface ICityRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllHouseByCityId(int id);
+        Task<IEnumerable<T>> GetAllHousesBySellerName(string sellerName);
+    }
+
+    public interface IGetBuyerRepository<T> where T : class
+    {
+        Task<IEnumerable<T>> GetAllApproved();
+        Task<IEnumerable<T>> GetHousesByCity(int cityId);
+        Task<IEnumerable<T>> GetHousesByType(string type);
+        Task<IEnumerable<T>> GetHousesByOption(string option);
+        Task<T> GetById(int id);
+    }
+
+    public interface IGetBuyerCartRepository<T> where T : class
+    {
+        Task<IEnumerable<T>> GetAllMyCart(int id);
+        Task AddToCart(T obj);
+        Task<T> DeleteFromCart(int HouseId, int UserDetailsId);
+        Task<T> CheckCartExistence(T obj);
+
+    }
+
+    public interface IGetUserDetailsRepository<T> where T : class
+    {
+        Task<T> GetUserId(string userName);
     }
 }
