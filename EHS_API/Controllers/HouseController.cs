@@ -3,6 +3,7 @@ using EHS_API.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,15 +14,20 @@ namespace EHS_API.Controllers
     [ApiController]
     public class HouseController : ControllerBase
     {
+
         private readonly IRepositories<House> _houseRepositories;
         private readonly IGetRepository<House> _getHouseRepositories;
         private readonly ICityRepository<House> _cityRepository;
+        private readonly IStateCityRepository<City> _stateCityRepository;
+        private readonly IStateRepository<State> _stateRepository;
 
-        public HouseController(IRepositories<House> houseRepositories, IGetRepository<House> getHouseRepositories,ICityRepository<House> cityRepository)
+        public HouseController(IRepositories<House> houseRepositories, IGetRepository<House> getHouseRepositories,ICityRepository<House> cityRepository,IStateRepository<State> stateRepository,IStateCityRepository<City> stateCityRepository)
         {
             _houseRepositories = houseRepositories;
             _getHouseRepositories = getHouseRepositories;
             _cityRepository = cityRepository;
+            _stateCityRepository = stateCityRepository;
+            _stateRepository = stateRepository;
         }
 
         //Get All Houses
@@ -108,6 +114,21 @@ namespace EHS_API.Controllers
                 return Ok(houses);
             }
             return NotFound("No houses in this city");
+        }
+
+      
+        [HttpGet("GetAllStates")]
+        public async Task<IActionResult> GetStates()
+        {
+            var states = await _stateRepository.GetStates();
+            return Ok(states);
+        }
+
+        [HttpGet("GetCitiesByStateId/{stateId}")]
+        public async Task<IActionResult> GetCities(int stateId)
+        {
+            var cities = await _stateCityRepository.GetCities(stateId);
+            return Ok(cities);
         }
     }
 }

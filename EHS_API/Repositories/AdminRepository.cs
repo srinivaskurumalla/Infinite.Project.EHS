@@ -45,6 +45,7 @@ namespace EHS_API.Repositories
             if (rejectProperty != null)
             {
                rejectProperty.Status = "REJECTED";
+                rejectProperty.Remarks = "Sorry your property got rejected";
 
                 _dbContext.Houses.Update(rejectProperty);
                 await _dbContext.SaveChangesAsync();
@@ -56,15 +57,16 @@ namespace EHS_API.Repositories
 
         public async Task<House> Approve(int id)
         {
-            var rejectProperty = await _dbContext.Houses.FindAsync(id);
-            if (rejectProperty != null)
+            var approveProperty = await _dbContext.Houses.FindAsync(id);
+            if (approveProperty != null)
             {
-                rejectProperty.Status = "APPROVED";
+                approveProperty.Status = "APPROVED";
+                approveProperty.Remarks = "Congrats your property got Approved";
 
-                _dbContext.Houses.Update(rejectProperty);
+                _dbContext.Houses.Update(approveProperty);
                 await _dbContext.SaveChangesAsync();
 
-                return rejectProperty;
+                return approveProperty;
             }
             return null;
         }

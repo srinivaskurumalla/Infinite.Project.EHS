@@ -51,7 +51,13 @@ namespace EHS_API.Models
        // public int HouseImageId { get; set; }
         public ICollection<HouseImage> HouseImages { get; set; }
 
+     /*   public int StateId { get; set; }
+        public State State { get; set; }
+*/
         public string Status { get; set; }
+       
+        [MaxLength(200)]
+        public string Remarks { get; set; }
 
     }
 

@@ -55,6 +55,8 @@ namespace EHS_API.Repositories
     {
         Task<IEnumerable<T>> GetAllHouseByCityId(int id);
         Task<IEnumerable<T>> GetAllHousesBySellerName(string sellerName);
+      
+
     }
 
     public interface IGetBuyerRepository<T> where T : class
@@ -79,4 +81,15 @@ namespace EHS_API.Repositories
     {
         Task<T> GetUserId(string userName);
     }
+
+    public interface IStateRepository<T> where T :class
+    {
+        Task<IEnumerable<T>> GetStates();
+    }
+
+    public interface IStateCityRepository<T> where T : class
+    {
+        Task<IEnumerable<T>> GetCities(int stateId);
+    }
+   
 }

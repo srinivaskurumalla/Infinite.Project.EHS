@@ -76,7 +76,9 @@ namespace EHS_API
             services.AddScoped<IGetBuyerCartRepository<BuyerCartModel>, BuyerRepository>();
             services.AddScoped<IGetUserDetailsRepository<UserDetails>, BuyerRepository>();
 
-
+            //city state relation
+            services.AddScoped<IStateCityRepository<City>, HouseRepository>();
+            services.AddScoped<IStateRepository<State>, HouseRepository>();
             services.AddControllers();
            
 

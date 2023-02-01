@@ -1,4 +1,5 @@
 ﻿using EHS_API.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EHS_API.Repositories
 {
-    public class HouseRepository : IRepositories<House>, IGetRepository<House>,ICityRepository<House>
+    public class HouseRepository : IRepositories<House>, IGetRepository<House>,ICityRepository<House>,IStateRepository<State>,IStateCityRepository<City>
     {
         private readonly ApplicationDbContext _dbContext;
         public HouseRepository(ApplicationDbContext dbContext)
@@ -97,5 +98,21 @@ namespace EHS_API.Repositories
             else
                 return null;
         }
+
+       
+        public async Task<IEnumerable<State>> GetStates()
+        {
+            var states = await _dbContext.States.ToListAsync();
+            return states;
+        }
+
+       
+        public async Task<IEnumerable<City>> GetCities(int stateId)
+        {
+            var cities = await _dbContext.Cities.Where(c => c.StateId == stateId).ToListAsync();
+            return cities;
+        }
+
+       
     }
 }
