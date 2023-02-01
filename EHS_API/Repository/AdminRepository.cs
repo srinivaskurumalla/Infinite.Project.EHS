@@ -1,10 +1,11 @@
 ﻿using EHS_API.Models;
+using EHS_API.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EHS_API.Repositories
+namespace EHS_API.Repository
 {
     public class AdminRepository : IAdminRepository<House>
     {
@@ -17,14 +18,14 @@ namespace EHS_API.Repositories
         public async Task<IEnumerable<House>> GetAll()
         {
 
-            var pendings = await _dbContext.Houses.Where(h => h.Status == null || h.Status == "REJECTED" || h.Status == "APPROVED").ToListAsync();
+            var pendings = await _dbContext.Houses.Where(h => h.Status == null || h.Status == "PENDING" || h.Status == "REJECTED" || h.Status == "APPROVED").ToListAsync();
             return pendings;
         }
 
         public async Task<IEnumerable<House>> GetAllPendings()
         {
 
-            var pendings = await _dbContext.Houses.Where(h => h.Status == null).ToListAsync();
+            var pendings = await _dbContext.Houses.Where(h => h.Status == null || h.Status == "PENDING").ToListAsync();
             return pendings;
         }
         public async Task<IEnumerable<House>> GetAllRejected()

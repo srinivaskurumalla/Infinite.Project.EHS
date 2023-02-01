@@ -1,14 +1,17 @@
+using EHS_API.DTO;
 using EHS_API.Models;
-using EHS_API.Repositories;
 using EHS_API.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace EHS_API
 {
@@ -34,18 +38,21 @@ namespace EHS_API
         public void ConfigureServices(IServiceCollection services)
         {
 
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = Configuration["JWT:issuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))
-            });
+          o.TokenValidationParameters = new TokenValidationParameters
+          {
+              ValidateIssuer = true,
+              ValidateAudience = false,
+              ValidateLifetime = true,
+              ValidateIssuerSigningKey = true,
+              ValidIssuer = Configuration["JWT:issuer"],
+              IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))
+          });
 
             //configuration connection string information
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("EHSconnection")));
+
 
             //Resoleve DI
             services.AddScoped<IRepositories<UserDetails>, SellerRepository>();
@@ -57,12 +64,28 @@ namespace EHS_API
             services.AddScoped<IAdminRepository<House>, AdminRepository>();
             services.AddScoped<IGetRepository<HouseImage>, HouseImageRepository>();
             services.AddScoped<IGetSellerRepository<House>, SellerRepository>();
+            services.AddScoped<ISellerDtoRepository<SellerHouseDto>, SellerRepository>();
+
+
+            services.AddScoped<ICityRepository<House>, HouseRepository>();
+            // services.AddScoped<ICityRepository<House>, HouseRepository>();
+            services.AddScoped<IGetRepository<City>, CityRepository>();
+
+
             services.AddScoped<IGetBuyerRepository<House>, BuyerRepository>();
             services.AddScoped<IGetBuyerCartRepository<BuyerCartModel>, BuyerRepository>();
             services.AddScoped<IGetUserDetailsRepository<UserDetails>, BuyerRepository>();
 
+
             services.AddControllers();
 
+
+
+
+            services.Configure<FormOptions>(options => options.MultipartBodyLengthLimit = long.MaxValue);
+
+
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EHS_API", Version = "v1" });
@@ -82,7 +105,6 @@ namespace EHS_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthentication();
 
             app.UseAuthorization();

@@ -11,6 +11,7 @@ namespace EHS_API.Models
 
         //Add References
         //seller part
+        // public DbSet<Seller> Sellers { get; set; }
         public DbSet<House> Houses { get; set; }
         public DbSet<HouseImage> HouseImages { get; set; }
 
@@ -30,7 +31,6 @@ namespace EHS_API.Models
             modelBuilder.Entity<UserRoleMappings>()
                 .HasIndex(p => new { p.UserDetailsId, p.UserRolesId })
                 .IsUnique();
-
             //For BuyerCartModel
             modelBuilder.Entity<BuyerCartModel>()
                 .HasIndex(p => new { p.UserDetaisId, p.HouseId })
@@ -38,8 +38,7 @@ namespace EHS_API.Models
         }
 
         //Buyer part
-        public DbSet<BuyerCartModel> BuyerCarts { get; set;}
-       
+        public DbSet<BuyerCartModel> BuyerCarts { get; set; }
 
     }
 }

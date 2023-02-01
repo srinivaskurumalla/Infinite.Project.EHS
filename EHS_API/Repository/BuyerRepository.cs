@@ -1,5 +1,5 @@
 ﻿using EHS_API.Models;
-using EHS_API.Repositories;
+using EHS_API.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

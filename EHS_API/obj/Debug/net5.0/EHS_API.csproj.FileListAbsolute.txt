@@ -64,3 +64,4 @@ D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.build.EHS_API.
 D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.EHS_API.props
 D:\Final Project\EHS_API\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.EHS_API.props
 D:\Final Project\EHS_API\obj\Debug\net5.0\refint\EHS_API.dll
+D:\Final Project\EHS_API\bin\Debug\net5.0\EHS_API.StaticWebAssets.xml

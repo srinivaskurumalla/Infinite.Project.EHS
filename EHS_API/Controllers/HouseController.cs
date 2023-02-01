@@ -1,5 +1,6 @@
 ﻿using EHS_API.Models;
-using EHS_API.Repositories;
+using EHS_API.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -14,21 +15,34 @@ namespace EHS_API.Controllers
     {
         private readonly IRepositories<House> _houseRepositories;
         private readonly IGetRepository<House> _getHouseRepositories;
+        private readonly ICityRepository<House> _cityRepository;
 
-        public HouseController(IRepositories<House> houseRepositories, IGetRepository<House> getHouseRepositories)
+        public HouseController(IRepositories<House> houseRepositories, IGetRepository<House> getHouseRepositories, ICityRepository<House> cityRepository)
         {
             _houseRepositories = houseRepositories;
             _getHouseRepositories = getHouseRepositories;
+            _cityRepository = cityRepository;
         }
 
         //Get All Houses
+
         [HttpGet("GetAllHouses")]
         public async Task<IEnumerable<House>> GetAllHouses()
         {
             return await _getHouseRepositories.GetAll();
         }
 
-
+        [HttpGet("GetAllHousesBySellerName/{sellerName}")]
+        public async Task<IActionResult> GetAllHousesBySellerId(string sellerName)
+        {
+            var houses = await _cityRepository.GetAllHousesBySellerName(sellerName);
+            if (houses != null)
+            {
+                return Ok(houses);
+            }
+            return NotFound("No houses in this city");
+            // return await _cityRepository.GetAllHousesBySellerId();
+        }
         [HttpGet]
         [Route("GetHouseById/{id}", Name = "GetHouseById")]
         public async Task<IActionResult> GetHouseById(int id)
@@ -47,6 +61,7 @@ namespace EHS_API.Controllers
         {
             if (ModelState.IsValid)
             {
+                house.Status ??= "PENDING";
                 await _houseRepositories.Create(house);
                 return CreatedAtAction("GetHouseById", new { id = house.Id }, house);
             }
@@ -82,6 +97,17 @@ namespace EHS_API.Controllers
                 return Ok(result);
             }
             return NotFound();
+        }
+
+        [HttpGet("GetHousesByCityId/{id}")]
+        public async Task<IActionResult> GetHousesByCityId(int id)
+        {
+            var houses = await _cityRepository.GetAllHouseByCityId(id);
+            if (houses != null)
+            {
+                return Ok(houses);
+            }
+            return NotFound("No houses in this city");
         }
     }
 }

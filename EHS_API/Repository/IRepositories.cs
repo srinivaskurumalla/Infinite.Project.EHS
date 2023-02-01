@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EHS_API.Models;
 
-namespace EHS_API.Repositories
+namespace EHS_API.Repository
 {
     //Manipulation operations
     public interface IRepositories<T> where T : class
@@ -47,6 +45,17 @@ namespace EHS_API.Repositories
         Task<IEnumerable<T>> GetAll();
     }*/
 
+    public interface ISellerDtoRepository<T> where T : class
+    {
+        Task<T> GetSellerDetails(int id);
+    }
+
+    public interface ICityRepository<T> where T : class
+    {
+        Task<IEnumerable<T>> GetAllHouseByCityId(int id);
+        Task<IEnumerable<T>> GetAllHousesBySellerName(string sellerName);
+    }
+
     public interface IGetBuyerRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllApproved();
@@ -60,9 +69,9 @@ namespace EHS_API.Repositories
     {
         Task<IEnumerable<T>> GetAllMyCart(int id);
         Task AddToCart(T obj);
-        Task<T> DeleteFromCart(int HouseId,int UserDetailsId);
+        Task<T> DeleteFromCart(int HouseId, int UserDetailsId);
         Task<T> CheckCartExistence(T obj);
-        
+
     }
 
     public interface IGetUserDetailsRepository<T> where T : class

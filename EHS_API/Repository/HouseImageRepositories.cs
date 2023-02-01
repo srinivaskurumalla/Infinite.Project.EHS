@@ -1,4 +1,5 @@
 ﻿using EHS_API.Models;
+using EHS_API.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace EHS_API.Repositories
+namespace EHS_API.Repository
 {
 
     public class HouseImageRepository : IGetRepository<HouseImage>, IRepositories<HouseImage>

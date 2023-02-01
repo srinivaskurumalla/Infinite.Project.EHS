@@ -5,19 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EHS_API.Models
 {
-    //Seller Details
-    /* public class Seller
-     {
-         public int Id { get; set; }
-
-         [Required]
-         [EmailAddress]
-         public string Email { get; set; }
-
-         public ICollection<House> Houses { get; set; }
-
-
-     }*/
 
     //House Details
     public class House
@@ -81,6 +68,8 @@ namespace EHS_API.Models
         public int HouseId { get; set; }
         //navingation property
         public House House { get; set; }
+
+
     }
 
     public class City

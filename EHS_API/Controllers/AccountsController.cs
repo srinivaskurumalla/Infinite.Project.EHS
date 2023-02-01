@@ -30,7 +30,7 @@ namespace EHS_API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody]UserDetails userDetails)
+        public async Task<IActionResult> Register([FromBody] UserDetails userDetails)
         {
             if (userDetails == null)
             {
@@ -82,6 +82,7 @@ namespace EHS_API.Controllers
             {
                 new Claim(ClaimTypes.Name,userDetails.UserName),
                 new Claim(ClaimTypes.Email, userDetails.Email),
+                new Claim(ClaimTypes.Role, userDetails.Role)
             };
 
             var token = new JwtSecurityToken(issuer: _configuration["JWT:issuer"],
@@ -96,6 +97,14 @@ namespace EHS_API.Controllers
         {
             var UserName = User.FindFirstValue(ClaimTypes.Name);
             return Ok(UserName);
+        }
+
+
+        [HttpGet("GetRole")]
+        public IActionResult GetRole()
+        {
+            var Role = User.FindFirstValue(ClaimTypes.Role);
+            return Ok(Role);
         }
 
         [NonAction]
