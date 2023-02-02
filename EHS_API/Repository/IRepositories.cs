@@ -78,4 +78,5 @@ namespace EHS_API.Repository
     {
         Task<T> GetUserId(string userName);
     }
+    
 }
