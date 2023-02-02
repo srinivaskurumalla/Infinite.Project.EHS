@@ -74,6 +74,12 @@ namespace EHS_API.Controllers
             return await _BuyerCartRepository.GetAllMyCart(id);
 
         }
+      /*  [HttpPost]
+        [Route("AddToCompare/{id}")]
+        public async Task<IActionResult> AddToCompare(int id)
+        {
+            await _BuyerCartRepository.AddToCompare();
+        }*/
 
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromBody] BuyerCartModel model)
@@ -88,11 +94,10 @@ namespace EHS_API.Controllers
             { return BadRequest("Item Already Exists"); }
 
         }
-
-        [HttpDelete("DeleteFromCart")]
-        public async Task<IActionResult> DeleteFromCart(int HouseId, int UserDetailsId)
+        [HttpDelete("DeleteFromCart/{houseId},{UserDetailsId}")]
+        public async Task<IActionResult> DeleteFromCart(int houseId, int UserDetailsId)
         {
-            var res = await _BuyerCartRepository.DeleteFromCart(HouseId, UserDetailsId);
+            var res = await _BuyerCartRepository.DeleteFromCart(houseId, UserDetailsId);
             if (res != null)
             {
                 return Ok(res);

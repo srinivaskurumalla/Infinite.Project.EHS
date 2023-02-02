@@ -82,6 +82,7 @@ namespace EHS_API.Repositories
         Task<T> GetUserId(string userName);
     }
 
+  
     public interface IStateRepository<T> where T :class
     {
         Task<IEnumerable<T>> GetStates();

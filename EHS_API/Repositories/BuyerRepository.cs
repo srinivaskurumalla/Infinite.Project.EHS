@@ -115,7 +115,13 @@ namespace EHS_API.Repositories
             return null;
         }
 
+       /* public Task AddToCompare(int id)
+        {
+            var res = _dbContext.Houses.FirstOrDefault(c => c.Id == id);
+            if(res != null)
+            {
 
-
+            }
+        }*/
     }
 }

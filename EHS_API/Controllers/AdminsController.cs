@@ -26,7 +26,7 @@ namespace EHS_API.Controllers
 
         [HttpGet("GetProperties/{selectedValue}")]
         // [ApiExplorerSettings(IgnoreApi = true)]
-        [Authorize(Roles = "ADMIN")]
+       // [Authorize(Roles = "ADMIN")]
         public async Task<IEnumerable<House>> GetData( string selectedValue = "All")
         {
             if (selectedValue == "All")
