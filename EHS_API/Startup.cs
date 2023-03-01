@@ -37,7 +37,14 @@ namespace EHS_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost4200",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
           o.TokenValidationParameters = new TokenValidationParameters
@@ -103,6 +110,9 @@ namespace EHS_API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EHS_API v1"));
             }
+
+            //CORS
+            app.UseCors("AllowLocalhost4200");
 
             app.UseHttpsRedirection();
 

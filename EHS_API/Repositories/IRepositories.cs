@@ -28,8 +28,8 @@ namespace EHS_API.Repositories
         Task<IEnumerable<T>> GetAllRejected();
         Task<IEnumerable<T>> ViewByRegion(int cityId);
         Task<IEnumerable<T>> ViewByOwner(string modeType);
-        Task<T> Reject(int id);
-        Task<T> Approve(int id);
+        Task<T> Reject(int id,string reason);
+        Task<T> Approve(int id,string reason);
 
 
     }

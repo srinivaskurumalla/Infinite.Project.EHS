@@ -39,13 +39,13 @@ namespace EHS_API.Repositories
             var pendings = await _dbContext.Houses.Where(h => h.Status == "APPROVED").ToListAsync();
             return pendings;
         }
-        public async Task<House> Reject(int id)
+        public async Task<House> Reject(int id,string reason)
         {
             var rejectProperty = await _dbContext.Houses.FindAsync(id);
             if (rejectProperty != null)
             {
                rejectProperty.Status = "REJECTED";
-                rejectProperty.Remarks = "Sorry your property got rejected";
+                rejectProperty.Remarks = reason;
 
                 _dbContext.Houses.Update(rejectProperty);
                 await _dbContext.SaveChangesAsync();
@@ -55,13 +55,13 @@ namespace EHS_API.Repositories
             return null;
         }
 
-        public async Task<House> Approve(int id)
+        public async Task<House> Approve(int id,string reason)
         {
             var approveProperty = await _dbContext.Houses.FindAsync(id);
             if (approveProperty != null)
             {
                 approveProperty.Status = "APPROVED";
-                approveProperty.Remarks = "Congrats your property got Approved";
+                approveProperty.Remarks = reason;
 
                 _dbContext.Houses.Update(approveProperty);
                 await _dbContext.SaveChangesAsync();

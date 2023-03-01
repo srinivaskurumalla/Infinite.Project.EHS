@@ -55,11 +55,11 @@ namespace EHS_API.Controllers
 
 
 
-        [HttpPut("RejectHouse/{id}")]
+        [HttpPut("RejectHouse/{id}/{reason}")]
         [Authorize(Roles ="ADMIN")]
-        public async Task<IActionResult> RejectHouse(int id)
+        public async Task<IActionResult> RejectHouse(int id, string reason)
         {
-            var res = await _adminRepository.Reject(id);
+            var res = await _adminRepository.Reject(id,reason);
          
             if (res != null)
             {
@@ -68,11 +68,11 @@ namespace EHS_API.Controllers
             return NotFound("House with id " + id + " not available");
         }
 
-        [HttpPut("ApproveHouse/{id}")]
+        [HttpPut("ApproveHouse/{id}/{reason}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> ApproveHouse(int id)
+        public async Task<IActionResult> ApproveHouse(int id, string reason)
         {
-            var res = await _adminRepository.Approve(id);
+            var res = await _adminRepository.Approve(id,reason);
 
             if (res != null)
             {
