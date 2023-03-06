@@ -61,7 +61,7 @@ namespace EHS_API
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("EHSconnection")));
 
 
-            //Resoleve DI
+            //Resolve DI
             services.AddScoped<IRepositories<UserDetails>, SellerRepository>();
             services.AddScoped<IRepositories<House>, HouseRepository>();
             services.AddScoped<IRepositories<HouseImage>, HouseImageRepository>();
