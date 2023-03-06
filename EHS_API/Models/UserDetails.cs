@@ -25,6 +25,8 @@ namespace EHS_API.Models
 
         [Required]
         [Phone]
+        [MinLength(10)]
+        [MaxLength(10)]
         public string PhoneNumber { get; set; }
         [Required]
         [MaxLength(50)]

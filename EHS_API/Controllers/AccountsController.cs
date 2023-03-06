@@ -34,6 +34,17 @@ namespace EHS_API.Controllers
         {
             if (userDetails == null)
             {
+               
+                return BadRequest();
+            }
+            
+
+          
+
+         var userExist =  _dbContext.Users.FirstOrDefault(u => u.UserName == userDetails.UserName && u.Email == userDetails.Email);
+           //var adminExist =  _dbContext.Users.FirstOrDefault(u => u.UserName == "ADMIN");
+            if (userExist != null || userDetails.UserName == "ADMIN")
+            {
                 return BadRequest();
             }
 

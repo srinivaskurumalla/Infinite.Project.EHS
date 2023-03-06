@@ -105,6 +105,7 @@ namespace EHS_API.Controllers
             return NotFound("Item does not exist");
         }
 
+       
         [HttpGet("GetAllHouses")]
         public async Task<IEnumerable<House>> GetAllHouses()
         {

@@ -59,6 +59,8 @@ namespace EHS_API.Repositories
             else
                 return null;
         }
+
+      
         //Getting Houses by Id so that the buyer can get any house details on clicking the house itself.
         public async Task<House> GetById(int id)
         {

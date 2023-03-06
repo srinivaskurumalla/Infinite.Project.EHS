@@ -12,10 +12,14 @@ namespace EHS_API.Controllers
     public class CitiesController : ControllerBase
     {
         private readonly IGetRepository<City> _getCityRepositories;
+        private readonly IStateCityRepository<City> _getStateCitiesRepositories;
+        private readonly IStateRepository<State> _getSateReposotiries;
 
-        public CitiesController(IGetRepository<City> getCityRepositories)
+        public CitiesController(IGetRepository<City> getCityRepositories,IStateCityRepository<City> getStateCitiesRepositories, IStateRepository<State> getSateReposotiries)
         {
             _getCityRepositories = getCityRepositories;
+            _getStateCitiesRepositories = getStateCitiesRepositories;
+            _getSateReposotiries = getSateReposotiries;
         }
 
 
@@ -26,6 +30,12 @@ namespace EHS_API.Controllers
             return await _getCityRepositories.GetAll();
         }
 
+        [HttpGet("GetAllStates")]
+        public async Task<IEnumerable<State>> GetAllStates()
+        {
+            return await _getSateReposotiries.GetStates();
+        }
+
         [HttpGet]
         [Route("GetcityById/{id}")]
         public async Task<IActionResult> GetSellerById(int id)
@@ -34,6 +44,18 @@ namespace EHS_API.Controllers
             if (city != null)
             {
                 return Ok(city);
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        [Route("GetCitiesFromState/{stateId}")]
+        public async Task<IActionResult> GetCitiesFromState(int stateId)
+        {
+            var cities = await _getStateCitiesRepositories.GetCities(stateId);
+            if (cities != null)
+            {
+                return Ok(cities);
             }
             return NotFound();
         }

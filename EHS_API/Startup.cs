@@ -40,8 +40,8 @@ namespace EHS_API
             //CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowLocalhost4200",
-                    builder => builder.WithOrigins("http://localhost:4200")
+                options.AddPolicy("AllowLocalhost44340",
+                    builder => builder.WithOrigins("https://localhost:44340")
                                       .AllowAnyMethod()
                                       .AllowAnyHeader());
             });
@@ -112,7 +112,7 @@ namespace EHS_API
             }
 
             //CORS
-            app.UseCors("AllowLocalhost4200");
+            app.UseCors("AllowLocalhost44340");
 
             app.UseHttpsRedirection();
 

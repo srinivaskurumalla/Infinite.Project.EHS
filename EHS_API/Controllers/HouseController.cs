@@ -88,7 +88,7 @@ namespace EHS_API.Controllers
             return NotFound("House with id " + id + " not available");
         }
 
-      
+       
         //update house
         [HttpPut("UpdateHouse/{id}")]
         public async Task<IActionResult> UpdateHouse(int id, [FromBody] House house)

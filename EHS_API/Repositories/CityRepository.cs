@@ -1,11 +1,12 @@
 ﻿using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EHS_API.Repositories
 {
-    public class CityRepository : IGetRepository<City>
+    public class CityRepository : IGetRepository<City>,IStateCityRepository<City>,IStateRepository<State>
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -30,6 +31,18 @@ namespace EHS_API.Repositories
                 }
                 return null;
             
+        }
+
+        public async Task<IEnumerable<City>> GetCities(int stateId)
+        {
+            var citiesFromState = await _dbContext.Cities.Where(c => c.StateId == stateId).ToListAsync();
+            return citiesFromState;
+        }
+
+        public async Task<IEnumerable<State>> GetStates()
+        {
+            var states = await _dbContext.States.ToListAsync();
+            return states;
         }
     }
 }

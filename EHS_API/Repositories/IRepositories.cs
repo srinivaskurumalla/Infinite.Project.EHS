@@ -74,7 +74,7 @@ namespace EHS_API.Repositories
         Task AddToCart(T obj);
         Task<T> DeleteFromCart(int HouseId, int UserDetailsId);
         Task<T> CheckCartExistence(T obj);
-
+       
     }
 
     public interface IGetUserDetailsRepository<T> where T : class

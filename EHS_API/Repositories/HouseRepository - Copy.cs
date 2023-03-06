@@ -28,6 +28,15 @@ namespace EHS_API.Repositories
         public async Task<House> Delete(int id)
         {
             var houseInDb = await _dbContext.Houses.FindAsync(id);
+            var houseInCarts = await _dbContext.BuyerCarts.Where(h => h.HouseId == id).ToListAsync();
+            if (houseInCarts.Count > 0)
+            {
+                _dbContext.BuyerCarts.RemoveRange(houseInCarts);
+                await _dbContext.SaveChangesAsync();
+               
+
+            }
+
             if (houseInDb != null)
             {
                 _dbContext.Houses.Remove(houseInDb);
@@ -37,6 +46,7 @@ namespace EHS_API.Repositories
             }
             return null;
         }
+      
         public async Task<House> Update(int id, House obj)
         {
             var houseInDb = await _dbContext.Houses.FindAsync(id);
