@@ -4,14 +4,16 @@ using EHS_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EHS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230127111047_InitializedUserAndRoles")]
+    partial class InitializedUserAndRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,29 +37,6 @@ namespace EHS_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.BuyerCartModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserDetaisId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HouseId");
-
-                    b.HasIndex("UserDetaisId", "HouseId")
-                        .IsUnique();
-
-                    b.ToTable("BuyerCarts");
                 });
 
             modelBuilder.Entity("EHS_API.Models.City", b =>
@@ -127,9 +106,8 @@ namespace EHS_API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Remarks")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -137,14 +115,11 @@ namespace EHS_API.Migrations
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserDetailsId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("UserDetailsId");
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Houses");
                 });
@@ -173,6 +148,34 @@ namespace EHS_API.Migrations
                     b.ToTable("HouseImages");
                 });
 
+            modelBuilder.Entity("EHS_API.Models.Seller", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sellers");
+                });
+
             modelBuilder.Entity("EHS_API.Models.State", b =>
                 {
                     b.Property<int>("Id")
@@ -199,24 +202,17 @@ namespace EHS_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -228,33 +224,14 @@ namespace EHS_API.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("RolesId");
+
+                    b.HasIndex("SellerId");
+
                     b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.UserRoleMappings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("UserDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserRolesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserRolesId");
-
-                    b.HasIndex("UserDetailsId", "UserRolesId")
-                        .IsUnique();
-
-                    b.ToTable("UserRoleMpping");
                 });
 
             modelBuilder.Entity("EHS_API.Models.UserRoles", b =>
@@ -271,25 +248,6 @@ namespace EHS_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.BuyerCartModel", b =>
-                {
-                    b.HasOne("EHS_API.Models.House", "House")
-                        .WithMany()
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
-                        .WithMany()
-                        .HasForeignKey("UserDetaisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("House");
-
-                    b.Navigation("UserDetails");
                 });
 
             modelBuilder.Entity("EHS_API.Models.City", b =>
@@ -311,15 +269,15 @@ namespace EHS_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
+                    b.HasOne("EHS_API.Models.Seller", "Seller")
                         .WithMany("Houses")
-                        .HasForeignKey("UserDetailsId")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("City");
 
-                    b.Navigation("UserDetails");
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("EHS_API.Models.HouseImage", b =>
@@ -333,23 +291,23 @@ namespace EHS_API.Migrations
                     b.Navigation("House");
                 });
 
-            modelBuilder.Entity("EHS_API.Models.UserRoleMappings", b =>
+            modelBuilder.Entity("EHS_API.Models.UserDetails", b =>
                 {
-                    b.HasOne("EHS_API.Models.UserDetails", "UserDetails")
+                    b.HasOne("EHS_API.Models.UserRoles", "Roles")
                         .WithMany()
-                        .HasForeignKey("UserDetailsId")
+                        .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EHS_API.Models.UserRoles", "UserRoles")
+                    b.HasOne("EHS_API.Models.Seller", "seller")
                         .WithMany()
-                        .HasForeignKey("UserRolesId")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserDetails");
+                    b.Navigation("Roles");
 
-                    b.Navigation("UserRoles");
+                    b.Navigation("seller");
                 });
 
             modelBuilder.Entity("EHS_API.Models.City", b =>
@@ -362,14 +320,14 @@ namespace EHS_API.Migrations
                     b.Navigation("HouseImages");
                 });
 
+            modelBuilder.Entity("EHS_API.Models.Seller", b =>
+                {
+                    b.Navigation("Houses");
+                });
+
             modelBuilder.Entity("EHS_API.Models.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("EHS_API.Models.UserDetails", b =>
-                {
-                    b.Navigation("Houses");
                 });
 #pragma warning restore 612, 618
         }
